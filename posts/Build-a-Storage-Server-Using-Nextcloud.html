@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>使用 Nextcloud 搭建私人云盘 | Subilan&#39;s Blog</title>
+    <meta name="description" content="再次重演鸽子奇迹">
+    <link rel="icon" href="https://fnmdp.oss-cn-beijing.aliyuncs.com/assets/avatar.png">
+    
+    <link rel="preload" href="/assets/css/0.styles.92b4f527.css" as="style"><link rel="preload" href="/assets/js/app.f31b5747.js" as="script"><link rel="preload" href="/assets/js/2.05dd0b1b.js" as="script"><link rel="preload" href="/assets/js/11.841d2b2a.js" as="script"><link rel="prefetch" href="/assets/js/10.5655c20f.js"><link rel="prefetch" href="/assets/js/12.7444b4fd.js"><link rel="prefetch" href="/assets/js/13.84140981.js"><link rel="prefetch" href="/assets/js/14.a32a23c0.js"><link rel="prefetch" href="/assets/js/15.fa487ab9.js"><link rel="prefetch" href="/assets/js/3.ca134f44.js"><link rel="prefetch" href="/assets/js/4.3d17c065.js"><link rel="prefetch" href="/assets/js/5.ea895823.js"><link rel="prefetch" href="/assets/js/6.73f44a4e.js"><link rel="prefetch" href="/assets/js/7.3f26932c.js"><link rel="prefetch" href="/assets/js/8.4fdeedb4.js"><link rel="prefetch" href="/assets/js/9.50dbd714.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.92b4f527.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar" data-v-d13ba18c><header class="navbar" data-v-d13ba18c><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Subilan's Blog</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">Blog</a></div><div class="nav-item"><a href="/Friends.html" class="nav-link">Friends</a></div><div class="nav-item"><a href="/About.html" class="nav-link">About</a></div><div class="nav-item"><a href="/Contact.html" class="nav-link">Contact</a></div> <!----></nav></div></header> <div class="sidebar-mask" data-v-d13ba18c></div> <aside class="sidebar" data-v-d13ba18c><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">Blog</a></div><div class="nav-item"><a href="/Friends.html" class="nav-link">Friends</a></div><div class="nav-item"><a href="/About.html" class="nav-link">About</a></div><div class="nav-item"><a href="/Contact.html" class="nav-link">Contact</a></div> <!----></nav>  <!----> </aside> <main class="page" data-v-d13ba18c> <div class="theme-default-content content__default"><h1 id="使用-nextcloud-搭建私人云盘"><a href="#使用-nextcloud-搭建私人云盘" aria-hidden="true" class="header-anchor">#</a> 使用 Nextcloud 搭建私人云盘</h1> <p>先前很多次都有想过搭建一个私人的云盘，却又因为感觉没有必要的矛盾心理而放弃了。这一次终于有机会可以接触到这个步骤了！</p> <p>由于先前了解过这方面的内容，所以我一个想到了一个开源的应用程序——Nextcloud，大概可以理解为 OwnCloud 的升级版。</p> <p><img src="https://i.loli.net/2019/11/15/VE9OkwWLDlxPfQ6.jpg" alt=""></p> <p>最开始我还以为它是一个线上的云盘服务，后来发现它其实是一个能够自己部署的开源程序。大概可以理解为它直接给你提供了一个一站式的云盘服务，包括前端和后端，这样你就不需要再去自己写程序管理了！<em>其实大概类似于把百度云部署到了自己的服务器上的感觉（错乱）。</em></p> <h2 id="准备工作"><a href="#准备工作" aria-hidden="true" class="header-anchor">#</a> 准备工作</h2> <p>在开始搭建之前，你需要准备一些东西，大概有这么几种</p> <ul><li>一台完全被你掌握的 VPS
+<ul><li>硬盘要够大！否则就失去了意义。</li> <li><strong>本文中使用 Ubuntu 18.04 进行演示，其它系统操作应该类似。</strong></li></ul></li> <li>Apache / Nginx、PHP <strong>&gt;=7.2</strong> 和 MySQL 支持
+<ul><li>建议全部使用最新版本</li></ul></li></ul> <p>在满足了这些必须条件以后，就可以开始着手搭建了。</p> <h2 id="搭建"><a href="#搭建" aria-hidden="true" class="header-anchor">#</a> 搭建</h2> <h3 id="准备工作-2"><a href="#准备工作-2" aria-hidden="true" class="header-anchor">#</a> 准备工作</h3> <p>首先我们需要 Nextcloud 的软件包，也就是本体。网页在这里 <a href="https://nextcloud.com/install/#instructions-server" target="_blank" rel="noopener noreferrer">https://nextcloud.com/install/#instructions-server<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>。不过其实你并不需要亲自去，在这里我们会跟随着步骤逐步引入。</p> <p>Nextcloud 安装有两种方式，一种是传统的软件包解压，另一种是使用官方发布的 <code>php</code> 文件按步骤一键安装。不过本文所探讨的仅限于前者，对于后者来说，笔者的服务器上并不能成功运行。考虑到国内部分特殊情况，我本人更倾向于前者。</p> <p>那么现在开始<strong>下载</strong>吧。点击<a href="https://download.nextcloud.com/server/releases/nextcloud-17.0.1.zip" target="_blank" rel="noopener noreferrer">这里<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>打开 Nextcloud 17.0.1 的官网下载链接。<strong>该版本截至 2019 年 11 月 15 日为最新。</strong></p> <div class="warning custom-block"><p><strong>⚠️ Warning</strong></p> <p>Not friendly to mainland network.</p></div> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># 为什么不用 curl 呢</span>
+<span class="token function">curl</span> https://download.nextcloud.com/server/releases/nextcloud-17.0.1.zip -o nextcloud-17.0.1.zip
+</code></pre></div><p>下载完毕后解压到要部署网站的位置。需要注意的是解压出来的并不是一大堆文件，而是一个 <code>nextcloud</code> 文件夹，里面包含的才是你想要的文件。因此如果你真的想要把它部署到某个目录，别忘了将 <code>nextcloud</code> 文件夹里的文件移动出来（<code>mv nextcloud/* &lt;document-root&gt;</code>）。</p> <div class="tip custom-block"><p><strong>提示 ❓</strong></p> <p>下文中使用 <code>&lt;document-root&gt;</code> 代替你所部署网页的位置，即所有网页文件的存放点和 Webserver 的根目录。</p></div> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># 如果没有可以 sudo apt-get install unzip</span>
+<span class="token function">unzip</span> nextcloud-17.0.1.zip
+</code></pre></div><p>这样一来准备工作就完成了。这个时候虽然你可以看到目录底下出现了 <code>index.php</code>，但是当你访问的时候你会发现事情并没有你想象的那么简单 🤔。</p> <h3 id="依赖和数据库"><a href="#依赖和数据库" aria-hidden="true" class="header-anchor">#</a> 依赖和数据库</h3> <p>首先需要确保将 Webserver 的根目录设置为你所解压 Nextcloud 并包含其所有文件的地方，这一步应该不需要多提了。</p> <p>Nextcloud 所部署的环境应保证<strong>越新越好</strong>：</p> <ul><li>操作系统应使用较新的 LTS 发行版；</li> <li>PHP 必须满足 &gt;=7.1，但是强烈推荐 <strong>&gt;=7.2</strong></li> <li>MySQL 必须满足 &gt;=5.5，支持 MariaDB</li></ul> <p>确保上面的刚性条件具备了以后，我们需要给 php 安装拓展。</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># 这些都是必要的拓展。</span>
+<span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> php7.2-gd php7.2-json php7.2-curl php7.2-mbstring php7.2-mysql php7.2-intl php-imagick php7.2-xml php7.2-zip
+</code></pre></div><p>接下来，为了安装能够顺利进行，我们必须给予 Web 服务器目录的权限：</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># 如果是 nginx 那么这里的用户会有所不同。</span>
+<span class="token function">sudo</span> <span class="token function">chown</span> -R www-data:www-data <span class="token operator">&lt;</span>document-root<span class="token operator">&gt;</span>
+</code></pre></div><p>接下来设置数据库。为了方面，这里就不一一解释各个配置的含义。仅需将以下内容粘贴到 <code>/etc/mysql/my.cnf</code> 中即可。</p> <div class="language-conf extra-class"><pre class="language-text"><code>[server]
+skip-name-resolve
+innodb_buffer_pool_size = 128M
+innodb_buffer_pool_instances = 1
+innodb_flush_log_at_trx_commit = 2
+innodb_log_buffer_size = 32M
+innodb_max_dirty_pages_pct = 90
+query_cache_type = 1
+query_cache_limit = 2M
+query_cache_min_res_unit = 2k
+query_cache_size = 64M
+tmp_table_size= 64M
+max_heap_table_size= 64M
+slow-query-log = 1
+slow-query-log-file = /var/log/mysql/slow.log
+long_query_time = 1
+
+[client-server]
+!includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mariadb.conf.d/
+
+[client]
+default-character-set = utf8mb4
+
+[mysqld]
+character-set-server = utf8mb4
+collation-server = utf8mb4_general_ci
+transaction_isolation = READ-COMMITTED
+binlog_format = ROW
+innodb_large_prefix=on
+innodb_file_format=barracuda
+innodb_file_per_table=1
+</code></pre></div><div class="warning custom-block"><p><strong>注意内容分节</strong></p> <p>在编辑 <code>my.cnf</code> 的时候，预设情况下可能已经出现了 <code>[mysqld]</code> 等小结，这个时候就不要直接暴力粘贴，而是选择性的将那些原先没有的配置粘贴到相应的位置，没有的就直接全部复制。</p></div> <p>最后记得重启。</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">sudo</span> systemctl restart mysql
+</code></pre></div><p>接下来修改 PHP 的 mysql 拓展的配置。通常情况下这个配置文件应该处于 <code>/etc/php7/conf.d/mysql.ini</code>，但是也许是因为系统差异，笔者的配置文件处于 <code>/etc/php/7.2/apache2/conf.d/20-pdo_mysql.ini</code>。各位可以根据自己的实际情况结合上述内容判断该配置文件的位置。</p> <p>验证是否为所要更改的配置文件的依据是看开头是否有</p> <div class="language-conf extra-class"><pre class="language-text"><code># configuration for PHP MySQL module
+extension=pdo_mysql.so
+</code></pre></div><p>接下来将如下内容粘贴</p> <div class="language-conf extra-class"><pre class="language-text"><code>[mysql]
+mysql.allow_local_infile=On
+mysql.allow_persistent=On
+mysql.cache_size=2000
+mysql.max_persistent=-1
+mysql.max_links=-1
+mysql.default_port=
+mysql.default_socket=/var/lib/mysql/mysql.sock  # Debian squeeze: /var/run/mysqld/mysqld.sock
+mysql.default_host=
+mysql.default_user=
+mysql.default_password=
+mysql.connect_timeout=60
+mysql.trace_mode=Off
+</code></pre></div><p>重启 Webserver，这里用的是 Apache。</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">sudo</span> systemctl restart apache2
+</code></pre></div><p>那么数据库的配置工作就已经完成了！接下来我们创建 Nextcloud 所需要的数据库。</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># 进入数据库</span>
+
+mysql -u root -p
+</code></pre></div><p>然后我们先单独创建一个 Nextcloud 专用账号</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">CREATE</span> <span class="token keyword">USER</span> <span class="token string">'nextcloud'</span><span class="token variable">@'localhost'</span> IDENTIFIED <span class="token keyword">BY</span> <span class="token string">'密码'</span><span class="token punctuation">;</span>
+</code></pre></div><p>再创建 Nextcloud 所需的数据库</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token comment">-- 在这里使用了 utf8mb4 编码以支持 Emoji 表情</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">DATABASE</span> nextcloud <span class="token keyword">CHARACTER</span> <span class="token keyword">SET</span> utf8mb4 <span class="token keyword">COLLATE</span> utf8mb4_general_ci<span class="token punctuation">;</span>
+</code></pre></div><p>然后给予我们之前创建的那个账户对此数据库的完全访问：</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">GRANT</span> <span class="token keyword">SELECT</span><span class="token punctuation">,</span> <span class="token keyword">INSERT</span><span class="token punctuation">,</span> <span class="token keyword">UPDATE</span><span class="token punctuation">,</span> <span class="token keyword">DELETE</span><span class="token punctuation">,</span> <span class="token keyword">CREATE</span><span class="token punctuation">,</span> <span class="token keyword">DROP</span><span class="token punctuation">,</span> <span class="token keyword">INDEX</span><span class="token punctuation">,</span> <span class="token keyword">ALTER</span><span class="token punctuation">,</span> <span class="token keyword">CREATE</span> <span class="token keyword">TEMPORARY</span> <span class="token keyword">TABLES</span> <span class="token keyword">ON</span> nextcloud<span class="token punctuation">.</span><span class="token operator">*</span> <span class="token keyword">TO</span> <span class="token string">'nextcloud'</span><span class="token variable">@'localhost'</span> IDENTIFIED <span class="token keyword">BY</span> <span class="token string">'密码'</span><span class="token punctuation">;</span>
+FLUSH <span class="token keyword">privileges</span><span class="token punctuation">;</span>
+</code></pre></div><p>然后就可以退出了。</p> <h3 id="正式安装"><a href="#正式安装" aria-hidden="true" class="header-anchor">#</a> 正式安装</h3> <p>没错！这才是正式安装的时刻。实际上只需要一行指令：</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token builtin class-name">cd</span> <span class="token operator">&lt;</span>document-root<span class="token operator">&gt;</span>
+<span class="token function">sudo</span> -u www-data php occ maintenance:install --database <span class="token string">&quot;mysql&quot;</span> --database-name <span class="token string">&quot;nextcloud&quot;</span> --database-user <span class="token string">&quot;nextcloud&quot;</span> --database-pass <span class="token string">&quot;密码&quot;</span> --admin-user <span class="token string">&quot;自定义&quot;</span> --admin-pass <span class="token string">&quot;自定义&quot;</span>
+</code></pre></div><p>上述指令较容易出错，只要有一个参数有问题均会导致无法安装。其中标有自定义（密码）的地方代表需要你自己配置填写。</p> <p>如果最后显示</p> <div class="language-output extra-class"><pre class="language-text"><code>Nextcloud was successfully installed
+</code></pre></div><p>代表安装成功了。这个时候打开你的网站，应该就可以看到正常页面了！</p></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">最后更新于: </span> <span class="time">2019/11/22</span></div></footer> <!----> </main> <footer class="footer" data-v-26679f30 data-v-d13ba18c><div class="copyright" data-v-26679f30>© 2019~2020 Subilan's Blog</div> <div class="license" data-v-26679f30>Based on <a href="//vuepress.vuejs.org" data-v-26679f30>VuePress</a></div></footer></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.f31b5747.js" defer></script><script src="/assets/js/2.05dd0b1b.js" defer></script><script src="/assets/js/11.841d2b2a.js" defer></script>
+  </body>
+</html>
